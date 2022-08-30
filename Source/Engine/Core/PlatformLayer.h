@@ -80,4 +80,15 @@ float get_time();
  * @param miliseconds Time in miliseconds to sleep.
  */
 void sleep(unsigned long miliseconds);
+
+void *platform_allocate(uint64_t size, bool aligned);
+
+void platform_free(void *block, bool aligned);
+
+void *platform_zero_memory(void *block, uint64_t size);
+
+void *platform_copy_memory(void *destination, const void *source, uint64_t size);
+
+void *platform_set_memory(void *destination, int32_t value, uint64_t size);
+
 } // namespace Platform

@@ -168,6 +168,32 @@ void sleep(unsigned long miliseconds)
 {
     Sleep(miliseconds);
 }
+
+#pragma warning(disable : 4100)
+void *platform_allocate(uint64_t size, bool aligned)
+{
+    return malloc(size);
+}
+
+void platform_free(void *block, bool aligned)
+{
+    free(block);
+}
+
+void *platform_zero_memory(void *block, uint64_t size)
+{
+    return memset(block, 0, size);
+}
+
+void *platform_copy_memory(void *destination, const void *source, uint64_t size)
+{
+    return memcpy(destination, source, size);
+}
+
+void *platform_set_memory(void *destination, int32_t value, uint64_t size)
+{
+    return memset(destination, value, size);
+}
 } // namespace Platform
 
 LRESULT CALLBACK win32_process_message(HWND hwnd, uint32_t msg, WPARAM w_param, LPARAM l_param)
