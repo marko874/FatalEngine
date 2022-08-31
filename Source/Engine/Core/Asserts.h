@@ -1,9 +1,8 @@
 #pragma once
 
-#include <cstdint>
-
 #include "../Defines.h"
 #include "Logger.h"
+#include <cstdint>
 
 #define USE_ASSERT
 

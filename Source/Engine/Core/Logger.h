@@ -2,6 +2,7 @@
 
 #include "../Defines.h"
 #include <initializer_list>
+#include <iostream>
 
 namespace Logger
 {
@@ -38,4 +39,10 @@ void shutdown_logger();
  * @param list An initializer list of const char* to log.
  */
 FATAL_API void log(Level lvl, std::initializer_list<const char *> list);
+
+template <Level lvl, typename... T> FATAL_API inline void log_variadics(T... t)
+{
+    ((std::cout << t << "\n"), ...);
+}
+
 } // namespace Logger

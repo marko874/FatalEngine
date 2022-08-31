@@ -8,6 +8,7 @@ namespace Application
 /**
  * A configuration for an application.
  */
+#pragma warning(disable : 26495)
 struct ApplicationConfig
 {
     /**
@@ -47,14 +48,16 @@ class Game
         return true;
     }
 
-    inline bool update(float dt)
+#pragma warning(disable : 4100)
+    inline bool update(double dt)
     {
-        return dt < 1.0f;
+        return true;
     }
 
-    inline bool render(float dt)
+#pragma warning(disable : 4100)
+    inline bool render(double dt)
     {
-        return dt < 1.0f;
+        return true;
     }
 
 #pragma warning(disable : 4100)

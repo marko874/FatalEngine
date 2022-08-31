@@ -4,6 +4,8 @@
 
 namespace Platform
 {
+static constexpr uint8_t LEVELS[6] = {64, 4, 6, 2, 1, 8};
+
 /**
  * An OS-agnostic platform layer class. Currently implemented only for Windows.
  */
@@ -55,6 +57,8 @@ class PlatformState
  *
  * @param list An initializer list of const char* to print.
  * @param uint8_t Color for the text.
+ *
+ * TODO: Use variadic template instead of initializer list.
  */
 void write_to_console(std::initializer_list<const char *> list, uint8_t color);
 
@@ -91,4 +95,5 @@ void *platform_copy_memory(void *destination, const void *source, uint64_t size)
 
 void *platform_set_memory(void *destination, int32_t value, uint64_t size);
 
+const char *get_vulkan_extension_name();
 } // namespace Platform

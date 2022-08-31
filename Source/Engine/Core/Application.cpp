@@ -1,14 +1,20 @@
 #include "Application.h"
+#include "Clock.h"
 #include "Logger.h"
 #include "PlatformLayer.h"
 
+#include <Renderer/Backend.h>
+
+#pragma warning(disable : 26495)
 struct ApplicationState
 {
     bool m_IsRunning;
     bool m_IsSuspended;
     int16_t m_Width;
     int16_t m_Height;
-    float m_DeltaTime;
+
+    Fatal::Clock m_Clock;
+    double m_LastTime;
 
     Platform::PlatformState m_PlatformState;
     Application::Game m_Game;
@@ -19,7 +25,6 @@ static bool is_initialized = false;
 
 namespace Application
 {
-
 bool create_application(Game const &game)
 {
     if (is_initialized)
@@ -43,6 +48,11 @@ bool create_application(Game const &game)
         return false;
     }
 
+    if (!Renderer::initialize(app_state.m_Game.m_Config.m_AppName))
+    {
+        Logger::log(Logger::Level::Error, {"Renderer initialization failed.\n"});
+    }
+
     if (!app_state.m_Game.initialize())
     {
         Logger::log(Logger::Level::Fatal, {"Game initialization failed.\n"});
@@ -55,6 +65,14 @@ bool create_application(Game const &game)
 
 bool run_application()
 {
+    app_state.m_Clock.start();
+    app_state.m_Clock.update();
+    app_state.m_LastTime = app_state.m_Clock.get_elapsed_time();
+
+    double running_time = 0.0;
+    uint8_t frame_count = 0;
+    double target_frame_seconds = 1.0 / 60.0;
+
     while (app_state.m_IsRunning)
     {
         if (!app_state.m_PlatformState.pump_messages())
@@ -64,19 +82,45 @@ bool run_application()
 
         if (!app_state.m_IsSuspended)
         {
-            if (!app_state.m_Game.update(0.0f))
+            app_state.m_Clock.update();
+            double current_time = app_state.m_Clock.get_elapsed_time();
+            double dt = current_time - app_state.m_LastTime;
+            double frame_start_time = Platform::get_time();
+
+            if (!app_state.m_Game.update(dt))
             {
                 Logger::log(Logger::Level::Fatal, {"Game update failed.\n"});
                 app_state.m_IsRunning = false;
                 break;
             }
 
-            if (!app_state.m_Game.render(0.0f))
+            if (!app_state.m_Game.render(dt))
             {
                 Logger::log(Logger::Level::Fatal, {"Game render failed.\n"});
                 app_state.m_IsRunning = false;
                 break;
             }
+
+            double frame_end_time = Platform::get_time();
+            double frame_elapsed_time = frame_end_time - frame_start_time;
+            running_time += frame_elapsed_time;
+
+            double remaining_seconds = target_frame_seconds - frame_elapsed_time;
+
+            if (remaining_seconds > 0)
+            {
+                double remaining_ms = remaining_seconds * 1000.0;
+
+                bool limit_frames = false;
+                if (remaining_ms > 0 && limit_frames)
+                {
+                    Platform::sleep(static_cast<unsigned long>(remaining_ms - 1));
+                }
+
+                frame_count++;
+            }
+
+            app_state.m_LastTime = current_time;
         }
     }
 

@@ -48,5 +48,4 @@ FATAL_API void *fset_memory(void *destination, int32_t value, uint64_t size)
 {
     return Platform::platform_set_memory(destination, value, size);
 }
-
 } // namespace Memory

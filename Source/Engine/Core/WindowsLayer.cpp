@@ -19,8 +19,6 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, uint32_t msg, WPARAM w_param, 
 
 namespace Platform
 {
-static constexpr uint8_t LEVELS[6] = {64, 4, 6, 2, 1, 8};
-
 bool PlatformState::start_platform(std::string_view app_name, int32_t x, int32_t y, int32_t width, int32_t height)
 {
     m_InternalState = new InternalState;
@@ -193,6 +191,11 @@ void *platform_copy_memory(void *destination, const void *source, uint64_t size)
 void *platform_set_memory(void *destination, int32_t value, uint64_t size)
 {
     return memset(destination, value, size);
+}
+
+const char *get_vulkan_extension_name()
+{
+    return "VK_KHR_win32_surface";
 }
 } // namespace Platform
 
