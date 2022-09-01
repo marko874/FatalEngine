@@ -18,17 +18,17 @@ int main()
     Application::Game game;
     if (!create_game(game))
     {
-        Logger::log(Logger::Level::Fatal, {"Game creation failed.\n"});
+        Logger::log<Logger::Level::Fatal>("Game creation failed.");
     }
 
     if (!Application::create_application(game))
     {
-        Logger::log(Logger::Level::Info, {"Application creation failed.\n"});
+        Logger::log<Logger::Level::Info>("Application creation failed.");
         return 1;
     }
 
     if (!Application::run_application())
     {
-        Logger::log(Logger::Level::Info, {"Application didn't shut down properly.\n"});
+        Logger::log<Logger::Level::Info>("Application didn't shut down properly.");
     }
 }

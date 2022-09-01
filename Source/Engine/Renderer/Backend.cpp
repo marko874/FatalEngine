@@ -3,11 +3,14 @@
 #include <Core/Asserts.h>
 #include <Core/Logger.h>
 #include <Core/PlatformLayer.h>
+#include <Core/WindowsLayer.h>
 #include <vector>
 #include <vulkan/vulkan.h>
 
 namespace Renderer
 {
+using enum Logger::Level;
+
 struct RendererBackend
 {
     VkInstance m_Instance;
@@ -19,15 +22,13 @@ static Renderer::RendererBackend backend;
 auto fatal_vk_assert = [](VkResult res) -> void {
     if (res != VK_SUCCESS)
     {
-        Logger::log(Logger::Level::Error, {"fatal_vk_assert() failed.\n"});
+        Logger::log<Error>("fatal_vk_assert() failed.");
         debug_break();
     }
 };
 
 bool initialize(std::string_view app_name)
 {
-    using enum Logger::Level;
-
     backend.m_FrameNumber = 0;
 
     VkApplicationInfo app_info = {
@@ -46,14 +47,14 @@ bool initialize(std::string_view app_name)
     extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     for (const auto &ext : extensions)
     {
-        Logger::log(Debug, {ext, "\n"});
+        Logger::log<Debug>(ext);
     }
 #endif
 
     std::vector<const char *> layers;
 
 #ifdef _DEBUG
-    Logger::log(Info, {"Validation layers enabled.\n"});
+    Logger::log<Info>("Validation layers enabled.");
 
     layers.emplace_back("VK_LAYER_KHRONOS_validation");
 
@@ -77,7 +78,7 @@ bool initialize(std::string_view app_name)
 
     fatal_vk_assert(vkCreateInstance(&create_info, nullptr, &backend.m_Instance));
 
-    Logger::log(Info, {"Vulkan renderer initialized successfully.\n"});
+    Logger::log<Info>("Vulkan renderer initialized successfully.");
     return true;
 } // namespace Renderer
 

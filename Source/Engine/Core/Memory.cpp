@@ -1,6 +1,9 @@
 #include "Memory.h"
 #include "Logger.h"
 #include "PlatformLayer.h"
+#include "WindowsLayer.h"
+
+#include <string>
 
 namespace Memory
 {
@@ -19,7 +22,8 @@ uint64_t get_current_allocations()
 
 void print_usage()
 {
-    std::cout << "Amount of non-freed bytes: " << get_current_allocations() << "\n";
+    auto current_allocs = std::to_string(get_current_allocations());
+    Logger::log<Logger::Level::Info>("Amount of non-freed bytes: ", current_allocs.data());
 }
 
 void *falloc(std::size_t size)

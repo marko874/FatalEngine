@@ -44,7 +44,7 @@ class Game
 
     inline bool initialize()
     {
-        Logger::log(Logger::Level::Info, {"Game initialized.\n"});
+        Logger::log<Logger::Level::Info>("Game initialized.");
         return true;
     }
 
@@ -63,7 +63,7 @@ class Game
 #pragma warning(disable : 4100)
     inline void on_resize(uint32_t width, uint32_t height)
     {
-        Logger::log(Logger::Level::Info, {"Game window resized.\n"});
+        Logger::log<Logger::Level::Info>("Game window resized.");
     }
 
     Application::ApplicationConfig m_Config;

@@ -60,16 +60,6 @@ class PlatformState
  *
  * TODO: Use variadic template instead of initializer list.
  */
-void write_to_console(std::initializer_list<const char *> list, uint8_t color);
-
-/**
- * Write an error to the console. Unlike write_to_console(),
- * this (specifically for WinAPI) uses the STD_ERROR_HANDLE.
- *
- * @param list An initializer list of const char* to print.
- * @param uint8_t Color for the text.
- */
-void write_error_to_console(std::initializer_list<const char *> list, uint8_t color);
 
 /**
  * Get the absolute time.

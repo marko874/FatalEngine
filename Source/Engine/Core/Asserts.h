@@ -16,14 +16,7 @@
 
 namespace Assert
 {
-constexpr inline void fatal_assert(bool expr, const char *msg = "")
-{
-    if (!expr)
-    {
-        Logger::log(Logger::Level::Fatal,
-                    {reinterpret_cast<const char *>(expr), msg, __FILE__, reinterpret_cast<const char *>(__LINE__)});
-    }
-}
+
 } // namespace Assert
 
 #endif

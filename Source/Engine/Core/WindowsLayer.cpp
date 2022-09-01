@@ -1,3 +1,4 @@
+#include "WindowsLayer.h"
 #include "PlatformLayer.h"
 
 #if FATAL_PLATFORM_WINDOWS
@@ -127,6 +128,7 @@ PlatformState::~PlatformState()
     m_InternalState = nullptr;
 }
 
+/*
 auto print = [](std::initializer_list<const char *> list, int handle) -> void {
     for (const auto &e : list)
     {
@@ -137,7 +139,6 @@ auto print = [](std::initializer_list<const char *> list, int handle) -> void {
         WriteConsoleA(GetStdHandle(handle), e, static_cast<DWORD>(len), num_written, 0);
     }
 };
-
 void write_to_console(std::initializer_list<const char *> list, uint8_t color)
 {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -153,7 +154,7 @@ void write_error_to_console(std::initializer_list<const char *> list, uint8_t co
 
     print(list, STD_ERROR_HANDLE);
 }
-
+*/
 float get_time()
 {
     LARGE_INTEGER current_time;

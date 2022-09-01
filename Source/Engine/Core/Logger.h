@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../Defines.h"
-#include <initializer_list>
-#include <iostream>
-
+#ifdef _WIN32
+#include "WindowsLayer.h"
+#endif
 namespace Logger
 {
 /**
@@ -38,11 +38,16 @@ void shutdown_logger();
  * Fatal, Error, Warn, Info, Debug or Trace.
  * @param list An initializer list of const char* to log.
  */
-FATAL_API void log(Level lvl, std::initializer_list<const char *> list);
 
-template <Level lvl, typename... T> FATAL_API inline void log_variadics(T... t)
+template <Level lvl, typename... T> inline void log(T &&...args)
 {
-    ((std::cout << t << "\n"), ...);
-}
+    static constexpr const char *LEVELS[6] = {
+        "[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: "};
 
+    const uint8_t lvl_as_int = static_cast<const uint8_t>(lvl);
+
+    DWORD handle = (lvl_as_int < 2 ? STD_OUTPUT_HANDLE : STD_ERROR_HANDLE);
+
+    Platform::write_to_console<lvl_as_int>(handle, LEVELS[lvl_as_int], args..., "\n");
+}
 } // namespace Logger

@@ -25,11 +25,13 @@ static bool is_initialized = false;
 
 namespace Application
 {
+using enum Logger::Level;
+
 bool create_application(Game const &game)
 {
     if (is_initialized)
     {
-        Logger::log(Logger::Level::Error, {"App created more than once.\n"});
+        Logger::log<Error>("App created more than once.");
         return false;
     }
 
@@ -50,12 +52,12 @@ bool create_application(Game const &game)
 
     if (!Renderer::initialize(app_state.m_Game.m_Config.m_AppName))
     {
-        Logger::log(Logger::Level::Error, {"Renderer initialization failed.\n"});
+        Logger::log<Error>("Renderer initialization failed.");
     }
 
     if (!app_state.m_Game.initialize())
     {
-        Logger::log(Logger::Level::Fatal, {"Game initialization failed.\n"});
+        Logger::log<Fatal>("Game initialization failed.");
         return false;
     }
 
@@ -89,14 +91,14 @@ bool run_application()
 
             if (!app_state.m_Game.update(dt))
             {
-                Logger::log(Logger::Level::Fatal, {"Game update failed.\n"});
+                Logger::log<Fatal>("Game update failed.");
                 app_state.m_IsRunning = false;
                 break;
             }
 
             if (!app_state.m_Game.render(dt))
             {
-                Logger::log(Logger::Level::Fatal, {"Game render failed.\n"});
+                Logger::log<Fatal>("Game render failed.");
                 app_state.m_IsRunning = false;
                 break;
             }
