@@ -128,33 +128,6 @@ PlatformState::~PlatformState()
     m_InternalState = nullptr;
 }
 
-/*
-auto print = [](std::initializer_list<const char *> list, int handle) -> void {
-    for (const auto &e : list)
-    {
-        OutputDebugStringA(e);
-
-        uint64_t len = strlen(e);
-        LPDWORD num_written = 0;
-        WriteConsoleA(GetStdHandle(handle), e, static_cast<DWORD>(len), num_written, 0);
-    }
-};
-void write_to_console(std::initializer_list<const char *> list, uint8_t color)
-{
-    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(console, LEVELS[color]);
-
-    print(list, STD_OUTPUT_HANDLE);
-}
-
-void write_error_to_console(std::initializer_list<const char *> list, uint8_t color)
-{
-    HANDLE console = GetStdHandle(STD_ERROR_HANDLE);
-    SetConsoleTextAttribute(console, LEVELS[color]);
-
-    print(list, STD_ERROR_HANDLE);
-}
-*/
 float get_time()
 {
     LARGE_INTEGER current_time;
