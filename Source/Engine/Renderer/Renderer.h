@@ -50,7 +50,21 @@ std::vector<VkSurfaceFormatKHR> get_surface_formats(VkPhysicalDevice const &phys
 [[nodiscard]] std::vector<VkFramebuffer> create_fbos(std::span<VkImageView> image_views, VkRenderPass const &rp,
                                                      VkDevice const &device, uint32_t width, uint32_t height) noexcept;
 
+std::pair<VkSemaphore, VkSemaphore> create_semaphores(VkDevice const &device) noexcept;
+
 } // namespace Swapchain
+
+namespace Descriptor
+{
+[[nodiscard]] VkDescriptorSetLayout create_descriptor_layout(VkDevice const &device);
+
+[[nodiscard]] VkDescriptorPool create_descriptor_pool(VkDevice const &device);
+
+[[nodiscard]] VkDescriptorSet create_desriptor_set(VkDevice const &device, VkDescriptorPool const &pool,
+                                                   VkDescriptorSetLayout const &layout, VkBuffer const &buf,
+                                                   uint32_t size);
+
+} // namespace Descriptor
 } // namespace Utils
 
 namespace Renderer

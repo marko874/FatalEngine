@@ -160,5 +160,18 @@ VulkanSwapchain create_swapchain(VkPhysicalDevice const &physical, VkDevice cons
 
     return swapchain;
 }
+
+std::pair<VkSemaphore, VkSemaphore> create_semaphores(VkDevice const &device) noexcept
+{
+    VkSemaphoreCreateInfo info = {.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO};
+
+    VkSemaphore acquire;
+    VkSemaphore release;
+    vkCreateSemaphore(device, &info, nullptr, &acquire);
+    vkCreateSemaphore(device, &info, nullptr, &release);
+
+    return {acquire, release};
+}
+
 } // namespace Swapchain
 } // namespace Utils

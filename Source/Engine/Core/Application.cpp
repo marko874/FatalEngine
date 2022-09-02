@@ -50,9 +50,6 @@ bool create_application(Game const &game)
         return false;
     }
 
-    Renderer::create_context(app_state.m_Game.m_Config.m_AppName, app_state.m_PlatformState.get_state(),
-                             app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight);
-
     if (!app_state.m_Game.initialize())
     {
         Logger::log<Fatal>("Game initialization failed.");
@@ -75,6 +72,7 @@ bool run_application()
 
     while (app_state.m_IsRunning)
     {
+
         if (!app_state.m_PlatformState.pump_messages())
         {
             app_state.m_IsRunning = false;

@@ -43,6 +43,8 @@ VulkanDevice create_device(VkInstance const &instance) noexcept
     };
 
     fatal_vk_assert(vkCreateDevice(device.m_PhysicalDevice, &create_info, nullptr, &device.m_Device));
+    vkGetDeviceQueue(device.m_Device, 0, 0, &device.m_Queue);
+
     return device;
 }
 

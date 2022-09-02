@@ -25,7 +25,7 @@ VulkanContext create_context(std::string_view app_name, void *state, uint32_t wi
     ctx.m_VulkanSwapchain = Utils::Swapchain::create_swapchain(
         ctx.m_VulkanDevice.m_PhysicalDevice, ctx.m_VulkanDevice.m_Device, ctx.m_Surface, width, height);
 
-    Logger::log<Info>("Renderer initialized successfully.");
+    Logger::log<Info>("Context created successfully.");
     return ctx;
 }
 
