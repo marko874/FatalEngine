@@ -85,5 +85,37 @@ uint32_t select_queue_index(std::span<VkQueueFamilyProperties> properties) noexc
     return index;
 }
 
+void submit_queue(VkQueue const &queue, VkCommandBuffer const &cb, VkFence const &fence, VkSemaphore const &acquire,
+                  VkSemaphore const &release)
+{
+    VkPipelineStageFlags mask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+
+    VkSubmitInfo submit_info = {
+        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+        .waitSemaphoreCount = 1,
+        .pWaitSemaphores = &acquire,
+        .pWaitDstStageMask = &mask,
+        .commandBufferCount = 1,
+        .pCommandBuffers = &cb,
+        .signalSemaphoreCount = 1,
+        .pSignalSemaphores = &release,
+    };
+
+    vkQueueSubmit(queue, 1, &submit_info, fence);
+}
+
+void queue_present(VulkanContext const &ctx, VkSemaphore const &release, uint32_t img_index)
+{
+    VkPresentInfoKHR info = {
+        .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+        .waitSemaphoreCount = 1,
+        .pWaitSemaphores = &release,
+        .swapchainCount = 1,
+        .pSwapchains = &ctx.m_VulkanSwapchain.m_Swapchain,
+        .pImageIndices = &img_index,
+    };
+    vkQueuePresentKHR(ctx.m_VulkanDevice.m_Queue, &info);
+}
+
 } // namespace Device
 } // namespace Utils

@@ -66,13 +66,32 @@ bool run_application()
     app_state.m_Clock.update();
     app_state.m_LastTime = app_state.m_Clock.get_elapsed_time();
 
+    using namespace Renderer;
+    auto ctx = create_context(app_state.m_Game.m_Config.m_AppName, app_state.m_PlatformState.get_state(),
+                              app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight);
+
+    const auto &device = ctx.m_VulkanDevice.m_Device;
+    const auto [acquire, release] = Utils::Swapchain::create_semaphores(device);
+
+    auto props = Utils::Device::get_queue_family_properties(ctx.m_VulkanDevice.m_PhysicalDevice);
+    uint32_t index = Utils::Device::select_queue_index(props);
+
+    VkFenceCreateInfo fence_create_info = {
+        .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+    };
+
+    VkFence fence;
+    vkCreateFence(ctx.m_VulkanDevice.m_Device, &fence_create_info, nullptr, &fence);
+
+    CommandPool cmd_pool(ctx.m_VulkanDevice.m_Device, index);
+    CommandBuffer cb(ctx.m_VulkanDevice.m_Device, cmd_pool.get(), CommandBufferLevel::Primary);
+
     double running_time = 0.0;
     uint8_t frame_count = 0;
     double target_frame_seconds = 1.0 / 60.0;
 
     while (app_state.m_IsRunning)
     {
-
         if (!app_state.m_PlatformState.pump_messages())
         {
             app_state.m_IsRunning = false;
@@ -91,6 +110,26 @@ bool run_application()
                 app_state.m_IsRunning = false;
                 break;
             }
+
+            // Render
+            uint32_t img_index = 0;
+            vkAcquireNextImageKHR(ctx.m_VulkanDevice.m_Device, ctx.m_VulkanSwapchain.m_Swapchain, UINT64_MAX, acquire,
+                                  0, &img_index);
+            vkDeviceWaitIdle(ctx.m_VulkanDevice.m_Device);
+            vkWaitForFences(ctx.m_VulkanDevice.m_Device, 1, &fence, VK_TRUE, UINT64_MAX);
+            vkResetFences(ctx.m_VulkanDevice.m_Device, 1, &fence);
+
+            cmd_pool.reset(ctx.m_VulkanDevice.m_Device);
+            cb.begin();
+
+            Utils::Swapchain::RenderPass::begin_render_pass(img_index, ctx, cb.get_buffer(),
+                                                            app_state.m_Game.m_Config.m_StartWidth,
+                                                            app_state.m_Game.m_Config.m_StartHeight);
+            vkCmdEndRenderPass(cb.get_buffer());
+            cb.end();
+
+            Utils::Device::submit_queue(ctx.m_VulkanDevice.m_Queue, cb.get_buffer(), fence, acquire, release);
+            Utils::Device::queue_present(ctx, release, img_index);
 
             if (!app_state.m_Game.render(dt))
             {
@@ -121,7 +160,6 @@ bool run_application()
             app_state.m_LastTime = current_time;
         }
     }
-
     app_state.m_IsRunning = false;
     return true;
 }

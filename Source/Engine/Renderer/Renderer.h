@@ -3,6 +3,7 @@
 #include "VulkanTypes.h"
 
 #include <Core/Asserts.h>
+#include <optional>
 #include <span>
 #include <string_view>
 #include <vector>
@@ -25,6 +26,11 @@ namespace Device
     VkPhysicalDevice const &physical) noexcept;
 
 [[nodiscard]] uint32_t select_queue_index(std::span<VkQueueFamilyProperties> properties) noexcept;
+
+void submit_queue(VkQueue const &queue, VkCommandBuffer const &cb, VkFence const &fence, VkSemaphore const &acquire,
+                  VkSemaphore const &release);
+
+void queue_present(VulkanContext const &ctx, VkSemaphore const &release, uint32_t img_index);
 } // namespace Device
 
 namespace Swapchain
@@ -51,6 +57,14 @@ std::vector<VkSurfaceFormatKHR> get_surface_formats(VkPhysicalDevice const &phys
                                                      VkDevice const &device, uint32_t width, uint32_t height) noexcept;
 
 std::pair<VkSemaphore, VkSemaphore> create_semaphores(VkDevice const &device) noexcept;
+
+namespace RenderPass
+{
+void begin_render_pass(uint32_t img_index, VulkanContext const &ctx, VkCommandBuffer const &cb, uint32_t width,
+                       uint32_t height);
+
+void end_render_pass(VkCommandBuffer const &cb);
+} // namespace RenderPass
 
 } // namespace Swapchain
 
@@ -80,3 +94,10 @@ bool begin_frame();
 bool end_frame();
 
 } // namespace Renderer
+
+namespace GLSL
+{
+[[nodiscard]] std::optional<std::vector<char>> get_file_contents(std::string &&path);
+
+[[nodiscard]] VkShaderModule create_shader(VkDevice device, std::string path);
+} // namespace GLSL

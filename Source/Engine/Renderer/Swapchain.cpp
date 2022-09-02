@@ -173,5 +173,33 @@ std::pair<VkSemaphore, VkSemaphore> create_semaphores(VkDevice const &device) no
     return {acquire, release};
 }
 
+namespace RenderPass
+{
+void begin_render_pass(uint32_t img_index, VulkanContext const &ctx, VkCommandBuffer const &cb, uint32_t width,
+                       uint32_t height)
+{
+    VkClearValue clear_val = {1.0f, 0.0f, 0.0f, 1.0f};
+    VkRenderPassBeginInfo info = {
+        .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+        .renderPass = ctx.m_VulkanSwapchain.m_RenderPass,
+        .framebuffer = ctx.m_VulkanSwapchain.m_Framebuffers[img_index],
+        .renderArea = {{0, 0},
+                       {
+                           width,
+                           height,
+                       }},
+        .clearValueCount = 1,
+        .pClearValues = &clear_val,
+    };
+
+    vkCmdBeginRenderPass(cb, &info, VK_SUBPASS_CONTENTS_INLINE);
+}
+
+void end_render_pass(VkCommandBuffer const &cb)
+{
+    vkCmdEndRenderPass(cb);
+}
+
+} // namespace RenderPass
 } // namespace Swapchain
 } // namespace Utils
