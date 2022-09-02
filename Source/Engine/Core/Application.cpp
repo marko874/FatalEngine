@@ -3,7 +3,7 @@
 #include "Logger.h"
 #include "PlatformLayer.h"
 
-#include <Renderer/Backend.h>
+#include <Renderer/Renderer.h>
 
 #pragma warning(disable : 26495)
 struct ApplicationState
@@ -50,10 +50,8 @@ bool create_application(Game const &game)
         return false;
     }
 
-    if (!Renderer::initialize(app_state.m_Game.m_Config.m_AppName))
-    {
-        Logger::log<Error>("Renderer initialization failed.");
-    }
+    Renderer::create_context(app_state.m_Game.m_Config.m_AppName, app_state.m_PlatformState.get_state(),
+                             app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight);
 
     if (!app_state.m_Game.initialize())
     {

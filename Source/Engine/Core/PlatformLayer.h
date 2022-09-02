@@ -1,6 +1,7 @@
 #pragma once
 
 #include <FatalPCH.h>
+#include <vulkan/vulkan.h>
 
 namespace Platform
 {
@@ -41,6 +42,8 @@ class PlatformState
      * translates them into character messages and dispatches them to window procedure.
      */
     bool pump_messages();
+
+    void *get_state() const noexcept;
 
     /**
      * Virtual destructor. Shuts down the platform
@@ -86,4 +89,6 @@ void *platform_copy_memory(void *destination, const void *source, uint64_t size)
 void *platform_set_memory(void *destination, int32_t value, uint64_t size);
 
 const char *get_vulkan_extension_name();
+
+VkSurfaceKHR create_vulkan_surface(VkInstance const &instance, void *state);
 } // namespace Platform

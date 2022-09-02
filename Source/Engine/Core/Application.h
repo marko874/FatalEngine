@@ -2,6 +2,7 @@
 
 #include <Engine/Core/Logger.h>
 #include <FatalPCH.h>
+#include <Renderer/Renderer.h>
 
 namespace Application
 {

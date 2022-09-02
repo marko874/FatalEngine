@@ -1,11 +1,13 @@
-#include "WindowsLayer.h"
+#include "Asserts.h"
 #include "PlatformLayer.h"
 
 #if FATAL_PLATFORM_WINDOWS
-#include <Windows.h>
-#include <windowsx.h>
+#include "WindowsLayer.h"
 
 #include <FatalPCH.h>
+#include <Windows.h>
+#include <vulkan/vulkan_win32.h>
+#include <windowsx.h>
 
 struct InternalState
 {
@@ -120,6 +122,11 @@ bool PlatformState::pump_messages()
     return true;
 }
 
+void *PlatformState::get_state() const noexcept
+{
+    return m_InternalState;
+}
+
 PlatformState::~PlatformState()
 {
     shut_down_platform();
@@ -170,6 +177,22 @@ void *platform_set_memory(void *destination, int32_t value, uint64_t size)
 const char *get_vulkan_extension_name()
 {
     return "VK_KHR_win32_surface";
+}
+
+VkSurfaceKHR create_vulkan_surface(VkInstance const &instance, void *state)
+{
+    auto st = static_cast<InternalState *>(state);
+
+    VkWin32SurfaceCreateInfoKHR create_info = {
+        .sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+        .hinstance = st->m_Instance,
+        .hwnd = st->m_HWND,
+    };
+
+    VkSurfaceKHR surface;
+    Assert::fatal_vk_assert(vkCreateWin32SurfaceKHR(instance, &create_info, nullptr, &surface));
+
+    return surface;
 }
 } // namespace Platform
 
