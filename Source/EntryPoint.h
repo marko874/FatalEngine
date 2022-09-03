@@ -11,24 +11,24 @@
  *
  * @return bool Success of the game creation.
  */
-extern bool create_game(Application::Game &out_game);
+extern bool create_game(Application::Game& out_game);
 
 int main()
 {
-    Application::Game game;
-    if (!create_game(game))
-    {
-        Logger::log<Logger::Level::Fatal>("Game creation failed.");
-    }
+	Application::Game game;
+	if(!create_game(game))
+	{
+		Logger::log<Logger::Level::Fatal>("Game creation failed.");
+	}
 
-    if (!Application::create_application(game))
-    {
-        Logger::log<Logger::Level::Info>("Application creation failed.");
-        return 1;
-    }
+	if(!Application::create_application(game))
+	{
+		Logger::log<Logger::Level::Info>("Application creation failed.");
+		return 1;
+	}
 
-    if (!Application::run_application())
-    {
-        Logger::log<Logger::Level::Info>("Application didn't shut down properly.");
-    }
+	if(!Application::run_application())
+	{
+		Logger::log<Logger::Level::Info>("Application didn't shut down properly.");
+	}
 }

@@ -9,66 +9,65 @@ namespace Application
 /**
  * A configuration for an application.
  */
-#pragma warning(disable : 26495)
 struct ApplicationConfig
 {
-    /**
+	/**
      * Start position on the X axis.
      */
-    int16_t m_StartPosX;
+	int16_t m_StartPosX;
 
-    /**
+	/**
      * Start position on the Yaxis.
      */
-    int16_t m_StartPosY;
+	int16_t m_StartPosY;
 
-    /**
+	/**
      * Window width.
      */
-    int16_t m_StartWidth;
+	int16_t m_StartWidth;
 
-    /**
+	/**
      * Window height.
      */
-    int16_t m_StartHeight;
+	int16_t m_StartHeight;
 
-    /**
+	/**
      * Title bar of the application.
      */
-    std::string_view m_AppName;
+	std::string_view m_AppName;
 };
 
 class Game
 {
-  public:
-    Game() = default;
+public:
+	Game() = default;
 
-    inline bool initialize()
-    {
-        Logger::log<Logger::Level::Info>("Game initialized.");
-        return true;
-    }
-
-#pragma warning(disable : 4100)
-    inline bool update(double dt)
-    {
-        return true;
-    }
+	inline bool initialize()
+	{
+		Logger::log<Logger::Level::Info>("Game initialized.");
+		return true;
+	}
 
 #pragma warning(disable : 4100)
-    inline bool render(double dt)
-    {
-        return true;
-    }
+	inline bool update(double dt)
+	{
+		return true;
+	}
 
 #pragma warning(disable : 4100)
-    inline void on_resize(uint32_t width, uint32_t height)
-    {
-        Logger::log<Logger::Level::Info>("Game window resized.");
-    }
+	inline bool render(double dt)
+	{
+		return true;
+	}
 
-    Application::ApplicationConfig m_Config;
-    void *m_State;
+#pragma warning(disable : 4100)
+	inline void on_resize(uint32_t width, uint32_t height)
+	{
+		Logger::log<Logger::Level::Info>("Game window resized.");
+	}
+
+	Application::ApplicationConfig m_Config;
+	void*                          m_State;
 };
 
 /**
@@ -76,7 +75,7 @@ class Game
  *
  * @return bool Success of the application creation.
  */
-FATAL_API bool create_application(Game const &game);
+FATAL_API bool create_application(Game const& game);
 
 /**
  * Runs the application loop.

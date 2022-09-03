@@ -1,81 +1,84 @@
 #include "Renderer.h"
 
+#include <Core/Asserts.h>
+
 namespace Utils
 {
+using namespace Assert;
 namespace Descriptor
 {
-VkDescriptorSetLayout create_descriptor_layout(VkDevice const &device)
+VkDescriptorSetLayout create_descriptor_layout(VkDevice const& device)
 {
-    VkDescriptorSetLayoutBinding layout_binding = {
-        .binding = 0,
-        .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-        .descriptorCount = 1,
-        .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
-    };
+	VkDescriptorSetLayoutBinding layout_binding = {
+		.binding         = 0,
+		.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		.descriptorCount = 1,
+		.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT,
+	};
 
-    VkDescriptorSetLayoutCreateInfo info = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-        .flags = 0,
-        .bindingCount = 1,
-        .pBindings = &layout_binding,
-    };
+	VkDescriptorSetLayoutCreateInfo info = {
+		.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+		.flags        = 0,
+		.bindingCount = 1,
+		.pBindings    = &layout_binding,
+	};
 
-    VkDescriptorSetLayout layout;
-    assert(vkCreateDescriptorSetLayout(device, &info, nullptr, &layout) == VK_SUCCESS);
+	VkDescriptorSetLayout layout;
+	fatal_vk_assert(vkCreateDescriptorSetLayout(device, &info, nullptr, &layout));
 
-    return layout;
+	return layout;
 }
 
-VkDescriptorPool create_descriptor_pool(VkDevice const &device)
+VkDescriptorPool create_descriptor_pool(VkDevice const& device)
 {
-    VkDescriptorPoolSize size = {
-        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-        .descriptorCount = 1,
-    };
+	VkDescriptorPoolSize size = {
+		.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		.descriptorCount = 1,
+	};
 
-    VkDescriptorPoolCreateInfo info = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-        .maxSets = 1,
-        .poolSizeCount = 1,
-        .pPoolSizes = &size,
-    };
+	VkDescriptorPoolCreateInfo info = {
+		.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+		.maxSets       = 1,
+		.poolSizeCount = 1,
+		.pPoolSizes    = &size,
+	};
 
-    VkDescriptorPool pool;
-    assert(vkCreateDescriptorPool(device, &info, nullptr, &pool) == VK_SUCCESS);
+	VkDescriptorPool pool;
+	fatal_vk_assert(vkCreateDescriptorPool(device, &info, nullptr, &pool));
 
-    return pool;
+	return pool;
 }
 
-VkDescriptorSet create_desriptor_set(VkDevice const &device, VkDescriptorPool const &pool,
-                                     VkDescriptorSetLayout const &layout, VkBuffer const &buf, uint32_t size)
+VkDescriptorSet create_desriptor_set(VkDevice const& device, VkDescriptorPool const& pool,
+	VkDescriptorSetLayout const& layout, VkBuffer const& buf, uint32_t size)
 {
-    VkDescriptorSetAllocateInfo alloc_info = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
-        .descriptorPool = pool,
-        .descriptorSetCount = 1,
-        .pSetLayouts = &layout,
-    };
+	VkDescriptorSetAllocateInfo alloc_info = {
+		.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+		.descriptorPool     = pool,
+		.descriptorSetCount = 1,
+		.pSetLayouts        = &layout,
+	};
 
-    VkDescriptorSet set;
-    assert(vkAllocateDescriptorSets(device, &alloc_info, &set) == VK_SUCCESS);
+	VkDescriptorSet set;
+	fatal_vk_assert(vkAllocateDescriptorSets(device, &alloc_info, &set));
 
-    VkDescriptorBufferInfo buffer_info = {
-        .buffer = buf,
-        .offset = 0,
-        .range = size,
-    };
+	VkDescriptorBufferInfo buffer_info = {
+		.buffer = buf,
+		.offset = 0,
+		.range  = size,
+	};
 
-    VkWriteDescriptorSet write = {
-        .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-        .dstSet = set,
-        .dstArrayElement = 0,
-        .descriptorCount = 1,
-        .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-        .pBufferInfo = &buffer_info,
-    };
+	VkWriteDescriptorSet write = {
+		.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+		.dstSet          = set,
+		.dstArrayElement = 0,
+		.descriptorCount = 1,
+		.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+		.pBufferInfo     = &buffer_info,
+	};
 
-    vkUpdateDescriptorSets(device, 1, &write, 0, nullptr);
-    return set;
+	vkUpdateDescriptorSets(device, 1, &write, 0, nullptr);
+	return set;
 }
 } // namespace Descriptor
 } // namespace Utils

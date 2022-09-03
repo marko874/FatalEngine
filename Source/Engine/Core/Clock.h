@@ -4,19 +4,19 @@ namespace Fatal
 {
 class Clock
 {
-  public:
-    Clock() = default;
+public:
+	Clock() = default;
 
-    void start();
+	void start();
 
-    void update();
+	void update();
 
-    void stop();
+	void stop();
 
-    [[nodiscard]] double get_elapsed_time() const noexcept;
+	[[nodiscard]] double get_elapsed_time() const noexcept;
 
-  private:
-    double m_StartTime;
-    double m_ElapsedTime;
+private:
+	double m_StartTime;
+	double m_ElapsedTime;
 };
 } // namespace Fatal

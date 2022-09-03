@@ -28,6 +28,7 @@ target_link_libraries(FatalEngineDL PUBLIC ${Vulkan_LIBRARIES})
 
 
 FILE(GLOB src_exe Source/Testbed/*.cpp)
-add_executable(FatalEngineEXE ${src_exe})
+FILE(GLOB src_exe_h Source/Testbed/*.h)
+add_executable(FatalEngineEXE ${src_exe} ${src_exe_h})
 target_precompile_headers(FatalEngineEXE PUBLIC Source/Engine/FatalPCH.h)
 target_link_libraries(FatalEngineEXE PUBLIC FatalEngineDL)

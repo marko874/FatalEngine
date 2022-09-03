@@ -2,6 +2,7 @@
 
 #include "../Defines.h"
 #include "Logger.h"
+
 #include <cstdint>
 
 #define USE_ASSERT
@@ -16,12 +17,13 @@
 
 namespace Assert
 {
-inline auto fatal_vk_assert = [](VkResult res) -> void {
-    if (res != VK_SUCCESS)
-    {
-        Logger::log<Logger::Level::Error>("fatal_vk_assert() failed.");
-        debug_break();
-    }
+inline auto fatal_vk_assert = [](VkResult res) -> void
+{
+	if(res != VK_SUCCESS)
+	{
+		Logger::log<Logger::Level::Error>("fatal_vk_assert() failed.");
+		debug_break();
+	}
 };
 
 } // namespace Assert
