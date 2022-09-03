@@ -1,9 +1,7 @@
-#version 460
+#version 450 core
 
-// layout(location = 0) in vec3 o_Col;
-layout(location = 0) out vec4 FragColor;
+layout(location = 0) out vec4 color_out;
 
-void main()
-{
-	FragColor = vec4(0.0f, 1.0f, 0.0f, 1.0);
+void main() {
+	color_out = vec4(0.0f, 0.0f, 1.0f, 1.0);
 }

@@ -29,13 +29,13 @@ void print_usage()
 
 void* falloc(std::size_t size)
 {
-	Memory::alloc_stats.m_TotallyAllocatedBytes += size;
+	alloc_stats.m_TotallyAllocatedBytes += size;
 	return Platform::platform_allocate(size, false);
 }
 
 void ffree(void* block, std::size_t size)
 {
-	Memory::alloc_stats.m_TotalFreedBytes += size;
+	alloc_stats.m_TotalFreedBytes += size;
 	Platform::platform_free(block, false);
 }
 

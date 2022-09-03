@@ -4,7 +4,9 @@
 #include "Logger.h"
 #include "PlatformLayer.h"
 
+#include <Renderer/Pipeline.h>
 #include <Renderer/Renderer.h>
+#include <array>
 #include <string>
 
 #pragma warning(disable : 26495)
@@ -86,7 +88,21 @@ bool run_application()
 	vkCreateFence(ctx.m_VulkanDevice.m_Device, &fence_create_info, nullptr, &fence);
 
 	CommandPool   cmd_pool(ctx.m_VulkanDevice.m_Device, index);
-	CommandBuffer cb(ctx.m_VulkanDevice.m_Device, cmd_pool.get(), CommandBufferLevel::Primary);
+	CommandBuffer cmd_buffer(ctx.m_VulkanDevice.m_Device, cmd_pool.get(), CommandBufferLevel::Primary);
+
+	const auto& cb = cmd_buffer.get_buffer();
+
+	auto vert = GLSL::create_shader(device, "C:/Dev/cpp/FatalEngine/Shaders/Default.vert.spv");
+	auto frag = GLSL::create_shader(device, "C:/Dev/cpp/FatalEngine/Shaders/Default.frag.spv");
+
+	const auto descriptor_layout = Utils::Descriptor::create_descriptor_layout(device);
+
+	PipelineBuilder pipeline = PipelineBuilder()
+	                               .add_shader(ShaderType::Vertex, vert)
+	                               .add_shader(ShaderType::Fragment, frag)
+	                               .init_viewport(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight)
+	                               .add_descriptor_set_layout(descriptor_layout);
+	pipeline.build(device, ctx.m_VulkanSwapchain.m_RenderPass);
 
 	double  running_time         = 0.0;
 	uint8_t frame_count          = 0;
@@ -122,15 +138,17 @@ bool run_application()
 			vkResetFences(ctx.m_VulkanDevice.m_Device, 1, &fence);
 
 			cmd_pool.reset(ctx.m_VulkanDevice.m_Device);
-			cb.begin();
+			cmd_buffer.begin();
 
-			Utils::Swapchain::RenderPass::begin_render_pass(img_index, ctx, cb.get_buffer(),
+			Utils::Swapchain::RenderPass::begin_render_pass(img_index, ctx, cb,
 				app_state.m_Game.m_Config.m_StartWidth,
 				app_state.m_Game.m_Config.m_StartHeight);
-			vkCmdEndRenderPass(cb.get_buffer());
-			cb.end();
+			pipeline.bind(cb);
+			vkCmdDraw(cb, 3, 1, 0, 0);
+			vkCmdEndRenderPass(cb);
+			cmd_buffer.end();
 
-			Utils::Device::submit_queue(ctx.m_VulkanDevice.m_Queue, cb.get_buffer(), fence, acquire, release);
+			Utils::Device::submit_queue(ctx.m_VulkanDevice.m_Queue, cb, fence, acquire, release);
 			Utils::Device::queue_present(ctx, release, img_index);
 
 			if(!app_state.m_Game.render(dt))
