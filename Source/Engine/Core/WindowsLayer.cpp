@@ -72,7 +72,7 @@ bool PlatformState::start_platform(std::string_view app_name, int32_t x, int32_t
 	window_y += border_rect.top;
 
 	window_width += border_rect.right - border_rect.left;
-	window_width += border_rect.bottom - border_rect.top;
+	window_height += border_rect.bottom - border_rect.top;
 
 	HWND handle = CreateWindowExA(window_ex_style, "FatalEngine", app_name.data(), window_style, window_x, window_y,
 		window_width, window_height, 0, 0, st->m_Instance, 0);

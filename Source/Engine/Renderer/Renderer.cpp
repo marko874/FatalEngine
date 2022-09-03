@@ -25,21 +25,3 @@ VulkanContext create_context(std::string_view app_name, void* state, uint32_t wi
 	Logger::log<Info>("Context created successfully.");
 	return ctx;
 }
-
-void shutdown()
-{
-}
-
-void resized()
-{
-}
-
-bool begin_frame()
-{
-	return true;
-}
-
-bool end_frame()
-{
-	return false;
-}

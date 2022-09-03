@@ -12,28 +12,28 @@ namespace Application
 struct ApplicationConfig
 {
 	/**
-     * Start position on the X axis.
-     */
+	 * Start position on the X axis.
+	 */
 	int16_t m_StartPosX;
 
 	/**
-     * Start position on the Yaxis.
-     */
+	 * Start position on the Yaxis.
+	 */
 	int16_t m_StartPosY;
 
 	/**
-     * Window width.
-     */
+	 * Window width.
+	 */
 	int16_t m_StartWidth;
 
 	/**
-     * Window height.
-     */
+	 * Window height.
+	 */
 	int16_t m_StartHeight;
 
 	/**
-     * Title bar of the application.
-     */
+	 * Title bar of the application.
+	 */
 	std::string_view m_AppName;
 };
 

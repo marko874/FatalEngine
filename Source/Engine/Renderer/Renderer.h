@@ -65,7 +65,6 @@ void begin_render_pass(uint32_t img_index, VulkanContext const& ctx, VkCommandBu
 
 void end_render_pass(VkCommandBuffer const& cb);
 } // namespace RenderPass
-
 } // namespace Swapchain
 
 namespace Descriptor
@@ -82,14 +81,6 @@ namespace Descriptor
 } // namespace Utils
 
 VulkanContext create_context(std::string_view app_name, void* state, uint32_t width, uint32_t height);
-
-void shutdown();
-
-void resized();
-
-bool begin_frame();
-
-bool end_frame();
 
 namespace GLSL
 {
