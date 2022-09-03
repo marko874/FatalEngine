@@ -92,8 +92,8 @@ bool run_application()
 
 	const auto& cb = cmd_buffer.get_buffer();
 
-	auto vert = GLSL::create_shader(device, "C:/Dev/cpp/FatalEngine/Shaders/Default.vert.spv");
-	auto frag = GLSL::create_shader(device, "C:/Dev/cpp/FatalEngine/Shaders/Default.frag.spv");
+	auto vert = GLSL::create_shader(device, "../Shaders/out/Default.vert.spv");
+	auto frag = GLSL::create_shader(device, "../Shaders/out/Default.frag.spv");
 
 	const auto descriptor_layout = Utils::Descriptor::create_descriptor_layout(device);
 
@@ -136,8 +136,6 @@ bool run_application()
 			vkDeviceWaitIdle(ctx.m_VulkanDevice.m_Device);
 			vkWaitForFences(ctx.m_VulkanDevice.m_Device, 1, &fence, VK_TRUE, UINT64_MAX);
 			vkResetFences(ctx.m_VulkanDevice.m_Device, 1, &fence);
-
-			cmd_pool.reset(ctx.m_VulkanDevice.m_Device);
 			cmd_buffer.begin();
 
 			Utils::Swapchain::RenderPass::begin_render_pass(img_index, ctx, cb,
