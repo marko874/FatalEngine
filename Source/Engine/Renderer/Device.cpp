@@ -3,8 +3,7 @@
 #include <array>
 
 using namespace Assert;
-namespace Utils
-{
+
 namespace Device
 {
 VulkanDevice create_device(VkInstance const& instance) noexcept
@@ -117,5 +116,15 @@ void queue_present(VulkanContext const& ctx, VkSemaphore const& release, uint32_
 	vkQueuePresentKHR(ctx.m_VulkanDevice.m_Queue, &info);
 }
 
+VkFence initialize_fence(VkDevice const& device)
+{
+	VkFenceCreateInfo fence_create_info = {
+		.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+	};
+
+	VkFence fence;
+	vkCreateFence(device, &fence_create_info, nullptr, &fence);
+
+	return fence;
+}
 } // namespace Device
-} // namespace Utils

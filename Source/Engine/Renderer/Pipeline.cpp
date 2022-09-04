@@ -1,5 +1,8 @@
 #include "Pipeline.h"
 
+#include <Core/Asserts.h>
+using namespace Assert;
+
 PipelineBuilder::PipelineBuilder()
 	: m_VertexInput{
 		.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
@@ -128,7 +131,7 @@ void PipelineBuilder::build(VkDevice const& device, VkRenderPass const& rp)
 	m_VertexInput.vertexAttributeDescriptionCount = static_cast<uint32_t>(m_Attributes.size());
 	m_VertexInput.pVertexAttributeDescriptions    = m_Attributes.data();
 
-	vkCreatePipelineLayout(device, &m_LayoutInfo, 0, &m_Layout);
+	fatal_vk_assert(vkCreatePipelineLayout(device, &m_LayoutInfo, 0, &m_Layout));
 
 	m_PipelineInfo = {
 		.sType               = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
@@ -145,7 +148,7 @@ void PipelineBuilder::build(VkDevice const& device, VkRenderPass const& rp)
 		.subpass             = 0,
 	};
 
-	vkCreateGraphicsPipelines(device, nullptr, 1, &m_PipelineInfo, nullptr, &m_Pipeline);
+	fatal_vk_assert(vkCreateGraphicsPipelines(device, nullptr, 1, &m_PipelineInfo, nullptr, &m_Pipeline));
 }
 
 const VkPipeline& PipelineBuilder::get() const noexcept

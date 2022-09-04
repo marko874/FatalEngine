@@ -67,6 +67,9 @@ public:
 	 */
 	[[nodiscard]] const VkPipeline& get() const noexcept;
 
+	/**
+	 * Get the Vulkan pipeline layout
+	 */
 	[[nodiscard]] const VkPipelineLayout& get_layout() const noexcept;
 
 	/**
@@ -74,7 +77,6 @@ public:
 	 */
 	void bind(VkCommandBuffer const& cmd_buf) noexcept;
 
-private:
 private:
 	std::vector<VkPipelineShaderStageCreateInfo>   m_Stages;
 	std::vector<VkVertexInputAttributeDescription> m_Attributes;

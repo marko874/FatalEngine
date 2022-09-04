@@ -1,7 +1,5 @@
 #include "Renderer.h"
 
-namespace Utils
-{
 namespace Swapchain
 {
 // TODO: rewrite in a more OOP-way.
@@ -202,4 +200,3 @@ void end_render_pass(VkCommandBuffer const& cb)
 
 } // namespace RenderPass
 } // namespace Swapchain
-} // namespace Utils

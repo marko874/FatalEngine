@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Pipeline.h"
 #include "VulkanTypes.h"
 
 #include <Core/Asserts.h>
@@ -15,6 +16,7 @@ namespace Utils
 [[nodiscard]] bool validation_layers_supported(std::span<const char*> requested_layers) noexcept;
 
 [[nodiscard]] VkInstance create_instance(const char* app_name) noexcept;
+} // namespace Utils
 
 namespace Device
 {
@@ -31,6 +33,8 @@ void submit_queue(VkQueue const& queue, VkCommandBuffer const& cb, VkFence const
 	VkSemaphore const& release);
 
 void queue_present(VulkanContext const& ctx, VkSemaphore const& release, uint32_t img_index);
+
+VkFence initialize_fence(VkDevice const& device);
 } // namespace Device
 
 namespace Swapchain
@@ -78,7 +82,6 @@ namespace Descriptor
 	uint32_t size);
 
 } // namespace Descriptor
-} // namespace Utils
 
 VulkanContext create_context(std::string_view app_name, void* state, uint32_t width, uint32_t height);
 
@@ -88,3 +91,25 @@ namespace GLSL
 
 [[nodiscard]] VkShaderModule create_shader(VkDevice device, std::string path);
 } // namespace GLSL
+
+class Renderer
+{
+public:
+	void initialize(std::string_view app_name, void* state, uint32_t width, uint32_t height);
+
+	void render(uint32_t width, uint32_t height);
+
+private:
+	VulkanContext                       m_Context;
+	std::pair<VkSemaphore, VkSemaphore> m_Semaphores;
+	uint32_t                            m_QueueIndex;
+	VkFence                             m_Fence;
+
+	std::unique_ptr<CommandPool>   m_CommandPool;
+	std::unique_ptr<CommandBuffer> m_CommandBuffer;
+
+	VkShaderModule        m_VertexShader;
+	VkShaderModule        m_FragmentShader;
+	VkDescriptorSetLayout m_DescriptorLayout;
+	PipelineBuilder       m_PipelineBuilder;
+};

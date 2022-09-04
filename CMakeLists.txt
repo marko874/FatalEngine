@@ -22,9 +22,9 @@ find_package(Vulkan REQUIRED)
 target_include_directories(FatalEngineDL PUBLIC ${Vulkan_INCLUDE_DIRS})
 target_link_libraries(FatalEngineDL PUBLIC ${Vulkan_LIBRARIES})
 
+FILE(GLOB_RECURSE src_exe "Source/Testbed/*.cpp" "Source/Testbed/*.h")
 
-FILE(GLOB src_exe Source/Testbed/*.cpp)
-FILE(GLOB src_exe_h Source/Testbed/*.h)
-add_executable(FatalEngineEXE ${src_exe} ${src_exe_h})
+add_executable(FatalEngineEXE ${src_exe})
+
 target_precompile_headers(FatalEngineEXE PUBLIC Source/Engine/FatalPCH.h)
 target_link_libraries(FatalEngineEXE PUBLIC FatalEngineDL)

@@ -2,8 +2,6 @@
 
 #include <Core/Asserts.h>
 
-namespace Utils
-{
 using namespace Assert;
 namespace Descriptor
 {
@@ -81,4 +79,3 @@ VkDescriptorSet create_desriptor_set(VkDevice const& device, VkDescriptorPool co
 	return set;
 }
 } // namespace Descriptor
-} // namespace Utils
