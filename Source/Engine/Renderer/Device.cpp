@@ -127,4 +127,13 @@ VkFence initialize_fence(VkDevice const& device)
 
 	return fence;
 }
+
+void handle_fences(VulkanContext const& ctx, VkFence const& fence, uint32_t& image_index, VkSemaphore const& acquire_semaphore)
+{
+	const auto& device = ctx.m_VulkanDevice.m_Device;
+	vkAcquireNextImageKHR(device, ctx.m_VulkanSwapchain.m_Swapchain, UINT64_MAX, acquire_semaphore, 0, &image_index);
+	vkDeviceWaitIdle(device);
+	vkWaitForFences(device, 1, &fence, VK_TRUE, UINT64_MAX);
+	vkResetFences(device, 1, &fence);
+}
 } // namespace Device

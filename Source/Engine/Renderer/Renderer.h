@@ -4,10 +4,9 @@
 #include "VulkanTypes.h"
 
 #include <Core/Asserts.h>
+#include <FatalPCH.h>
 #include <optional>
-#include <span>
-#include <string_view>
-#include <vector>
+#include <utility>
 
 namespace Utils
 {
@@ -35,6 +34,8 @@ void submit_queue(VkQueue const& queue, VkCommandBuffer const& cb, VkFence const
 void queue_present(VulkanContext const& ctx, VkSemaphore const& release, uint32_t img_index);
 
 VkFence initialize_fence(VkDevice const& device);
+
+void handle_fences(VulkanContext const& ctx, VkFence const& fence, uint32_t& image_index, VkSemaphore const& acquire_semaphore);
 } // namespace Device
 
 namespace Swapchain

@@ -60,10 +60,8 @@ void Renderer::initialize(std::string_view app_name, void* state, uint32_t width
 void Renderer::render(uint32_t width, uint32_t height)
 {
 	uint32_t img_index = 0;
-	vkAcquireNextImageKHR(m_Context.m_VulkanDevice.m_Device, m_Context.m_VulkanSwapchain.m_Swapchain, UINT64_MAX, m_Semaphores.first, 0, &img_index);
-	vkDeviceWaitIdle(m_Context.m_VulkanDevice.m_Device);
-	vkWaitForFences(m_Context.m_VulkanDevice.m_Device, 1, &m_Fence, VK_TRUE, UINT64_MAX);
-	vkResetFences(m_Context.m_VulkanDevice.m_Device, 1, &m_Fence);
+	Device::handle_fences(m_Context, m_Fence, img_index, m_Semaphores.first);
+	m_CommandPool->reset(m_Context.m_VulkanDevice.m_Device);
 
 	m_CommandBuffer->begin();
 	const auto& cb = m_CommandBuffer->get_buffer();
@@ -75,6 +73,7 @@ void Renderer::render(uint32_t width, uint32_t height)
 	vkCmdEndRenderPass(cb);
 
 	m_CommandBuffer->end();
+
 	Device::submit_queue(m_Context.m_VulkanDevice.m_Queue, cb, m_Fence, m_Semaphores.first, m_Semaphores.second);
 	Device::queue_present(m_Context, m_Semaphores.second, img_index);
 }
