@@ -31,7 +31,7 @@ VkShaderModule create_shader(VkDevice device, std::string path)
 	VkShaderModuleCreateInfo create_info = {
 		.sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
 		.codeSize = src.value().size(),
-		.pCode    = reinterpret_cast<const uint32_t*>(src.value().data()),
+		.pCode    = reinterpret_cast<uint32_t const*>(src.value().data()),
 	};
 
 	VkShaderModule shader;

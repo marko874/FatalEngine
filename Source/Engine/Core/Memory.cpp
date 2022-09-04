@@ -44,7 +44,7 @@ FATAL_API void* fzero_memory(void* block, uint64_t size)
 	return Platform::platform_zero_memory(block, size);
 }
 
-FATAL_API void* fcopy_memory(void* destination, const void* source, uint64_t size)
+FATAL_API void* fcopy_memory(void* destination, void const* source, uint64_t size)
 {
 	return Platform::platform_copy_memory(destination, source, size);
 }

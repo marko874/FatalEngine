@@ -30,7 +30,7 @@ VulkanContext create_context(std::string_view app_name, void* state, uint32_t wi
 void Renderer::initialize(std::string_view app_name, void* state, uint32_t width, uint32_t height)
 {
 	m_Context          = create_context(app_name, state, width, height);
-	const auto& device = m_Context.m_VulkanDevice;
+	auto const& device = m_Context.m_VulkanDevice;
 
 	m_Semaphores = Swapchain::create_semaphores(m_Context.m_VulkanDevice.m_Device);
 
@@ -64,7 +64,7 @@ void Renderer::render(uint32_t width, uint32_t height)
 	m_CommandPool->reset(m_Context.m_VulkanDevice.m_Device);
 
 	m_CommandBuffer->begin();
-	const auto& cb = m_CommandBuffer->get_buffer();
+	auto const& cb = m_CommandBuffer->get_buffer();
 
 	Swapchain::RenderPass::begin_render_pass(img_index, m_Context, cb, width, height);
 	m_PipelineBuilder.bind(cb);

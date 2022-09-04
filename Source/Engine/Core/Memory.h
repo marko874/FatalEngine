@@ -16,7 +16,7 @@ FATAL_API void ffree(void* block, std::size_t size);
 
 FATAL_API void* fzero_memory(void* block, uint64_t size);
 
-FATAL_API void* fcopy_memory(void* destination, const void* source, uint64_t size);
+FATAL_API void* fcopy_memory(void* destination, void const* source, uint64_t size);
 
 FATAL_API void* fset_memory(void* destination, int32_t value, uint64_t size);
 } // namespace Memory

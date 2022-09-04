@@ -45,7 +45,7 @@ inline void log(T&&... args)
 		"[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: "
 	};
 
-	const uint8_t lvl_as_int = static_cast<const uint8_t>(lvl);
+	uint8_t const lvl_as_int = static_cast<uint8_t const>(lvl);
 
 	DWORD handle = (lvl_as_int < 2 ? STD_OUTPUT_HANDLE : STD_ERROR_HANDLE);
 

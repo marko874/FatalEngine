@@ -65,12 +65,12 @@ public:
 	 *
 	 * @return Vulkan pipeline
 	 */
-	[[nodiscard]] const VkPipeline& get() const noexcept;
+	[[nodiscard]] VkPipeline const& get() const noexcept;
 
 	/**
 	 * Get the Vulkan pipeline layout
 	 */
-	[[nodiscard]] const VkPipelineLayout& get_layout() const noexcept;
+	[[nodiscard]] VkPipelineLayout const& get_layout() const noexcept;
 
 	/**
 	 * @brief Bind the Vulkan pipeline

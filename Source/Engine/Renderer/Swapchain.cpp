@@ -29,8 +29,8 @@ VkSwapchainKHR create_vulkan_swapchain(VkPhysicalDevice const& physical, VkDevic
 {
 	assert(supports_present(physical, surface));
 
-	const auto formats        = get_surface_formats(physical, surface);
-	const auto default_format = formats[0];
+	auto const formats        = get_surface_formats(physical, surface);
+	auto const default_format = formats[0];
 
 	VkSurfaceCapabilitiesKHR caps;
 	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physical, surface, &caps);

@@ -22,9 +22,9 @@ bool validation_layers_supported(std::span<const char*> requested_layers) noexce
 	bool found            = false;
 	auto available_layers = get_layer_properties();
 
-	for(const auto& requested_layer : requested_layers)
+	for(auto const& requested_layer : requested_layers)
 	{
-		for(const auto& available_layer : available_layers)
+		for(auto const& available_layer : available_layers)
 		{
 			if(strcmp(available_layer.layerName, requested_layer) == 0)
 			{

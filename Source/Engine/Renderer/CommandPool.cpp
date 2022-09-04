@@ -10,7 +10,7 @@ CommandPool::CommandPool(VkDevice const& device, uint32_t index)
 	vkCreateCommandPool(device, &info, nullptr, &m_Pool);
 }
 
-const VkCommandPool& CommandPool::get() const noexcept
+VkCommandPool const& CommandPool::get() const noexcept
 {
 	return m_Pool;
 }
@@ -46,7 +46,7 @@ CommandBuffer::CommandBuffer(VkDevice const& device, VkCommandPool const& pool,
 	set_begin_info();
 }
 
-const VkCommandBuffer& CommandBuffer::get_buffer() const noexcept
+VkCommandBuffer const& CommandBuffer::get_buffer() const noexcept
 {
 	return m_Buffer;
 }

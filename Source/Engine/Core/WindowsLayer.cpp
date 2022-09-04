@@ -164,7 +164,7 @@ void* platform_zero_memory(void* block, uint64_t size)
 	return memset(block, 0, size);
 }
 
-void* platform_copy_memory(void* destination, const void* source, uint64_t size)
+void* platform_copy_memory(void* destination, void const* source, uint64_t size)
 {
 	return memcpy(destination, source, size);
 }

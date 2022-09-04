@@ -151,12 +151,12 @@ void PipelineBuilder::build(VkDevice const& device, VkRenderPass const& rp)
 	fatal_vk_assert(vkCreateGraphicsPipelines(device, nullptr, 1, &m_PipelineInfo, nullptr, &m_Pipeline));
 }
 
-const VkPipeline& PipelineBuilder::get() const noexcept
+VkPipeline const& PipelineBuilder::get() const noexcept
 {
 	return m_Pipeline;
 }
 
-const VkPipelineLayout& PipelineBuilder::get_layout() const noexcept
+VkPipelineLayout const& PipelineBuilder::get_layout() const noexcept
 {
 	return m_Layout;
 }
