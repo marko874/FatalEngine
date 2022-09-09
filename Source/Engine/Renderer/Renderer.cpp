@@ -4,6 +4,7 @@
 #include <Core/Logger.h>
 #include <Core/PlatformLayer.h>
 #include <Core/WindowsLayer.h>
+#include <Renderer/BufferObject.h>
 #include <array>
 #include <span>
 #include <string>
@@ -51,9 +52,13 @@ void Renderer::initialize(std::string_view app_name, void* state, uint32_t width
 	                        .add_shader(ShaderType::Vertex, m_VertexShader)
 	                        .add_shader(ShaderType::Fragment, m_FragmentShader)
 	                        .init_viewport(width, height)
+	                        .add_input_binding(5 * sizeof(float), RendererStream::VertexRate)
+	                        .add_attribute_description(0, 0, VK_FORMAT_R32G32_SFLOAT, 0)
+	                        .add_attribute_description(0, 1, VK_FORMAT_R32G32_SFLOAT, 2 * sizeof(float))
 	                        .add_descriptor_set_layout(m_DescriptorLayout);
 
 	m_PipelineBuilder.build(device.m_Device, m_Context.m_VulkanSwapchain.m_RenderPass);
+
 	Logger::log<Logger::Level::Info>("Renderer initialized successfully.");
 }
 
