@@ -24,7 +24,7 @@ std::optional<std::vector<char>> get_file_contents(std::string&& path)
 	}
 }
 
-VkShaderModule create_shader(VkDevice device, std::string path)
+VkShaderModule create_shader(VkDevice const& device, std::string path)
 {
 	auto src = get_file_contents(std::move(path));
 

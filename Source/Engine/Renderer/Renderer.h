@@ -90,7 +90,7 @@ namespace GLSL
 {
 [[nodiscard]] std::optional<std::vector<char>> get_file_contents(std::string&& path);
 
-[[nodiscard]] VkShaderModule create_shader(VkDevice device, std::string path);
+[[nodiscard]] VkShaderModule create_shader(VkDevice const& device, std::string path);
 } // namespace GLSL
 
 class Renderer

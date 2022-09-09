@@ -18,11 +18,15 @@ list(REMOVE_ITEM engine_src "Source/Engine/FatalPCH.h")
 # add_library(imgui STATIC ${imgui_src})
 # target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends/)
 
+
 # FatalEngine: a dynamic lib
 add_library(FatalEngineDL SHARED ${engine_src})
 target_compile_definitions(FatalEngineDL PRIVATE FATAL_EXPORT=1)
+
 target_include_directories(FatalEngineDL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine/)
 target_include_directories(FatalEngineDL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Source)
+target_include_directories(FatalEngineDL PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/cgltf/)
+
 target_link_libraries(FatalEngineDL PUBLIC imgui)
 
 find_package(Vulkan REQUIRED)
