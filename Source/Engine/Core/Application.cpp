@@ -4,10 +4,11 @@
 #include "Logger.h"
 #include "PlatformLayer.h"
 
+#include <FatalPCH.h>
+#include <Model.h>
+#include <Renderer/BufferObject.h>
 #include <Renderer/Pipeline.h>
 #include <Renderer/Renderer.h>
-#include <array>
-#include <string>
 
 #pragma warning(disable : 26495)
 struct ApplicationState
@@ -80,6 +81,12 @@ bool run_application()
 	uint8_t frame_count          = 0;
 	double  target_frame_seconds = 1.0 / 60.0;
 
+	auto const& device   = renderer.get_context().m_VulkanDevice.m_Device;
+	auto const& physical = renderer.get_context().m_VulkanDevice.m_PhysicalDevice;
+
+	Model m;
+	m.create_model("../Assets/Monkey.glb", device, physical);
+
 	while(app_state.m_IsRunning)
 	{
 		if(!app_state.m_PlatformState.pump_messages())
@@ -101,7 +108,7 @@ bool run_application()
 				break;
 			}
 
-			renderer.render(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight);
+			renderer.render(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight, m.get_vertex_buffer_object().get_buffer(), m.get_index_buffer_object().get_buffer(), m.get_num_indices());
 
 			if(!app_state.m_Game.render(dt))
 			{

@@ -67,8 +67,6 @@ namespace RenderPass
 {
 void begin_render_pass(uint32_t img_index, VulkanContext const& ctx, VkCommandBuffer const& cb, uint32_t width,
 	uint32_t height);
-
-void end_render_pass(VkCommandBuffer const& cb);
 } // namespace RenderPass
 } // namespace Swapchain
 
@@ -98,7 +96,9 @@ class Renderer
 public:
 	void initialize(std::string_view app_name, void* state, uint32_t width, uint32_t height);
 
-	void render(uint32_t width, uint32_t height);
+	void render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBuffer const& ebo, uint64_t indices);
+
+	VulkanContext const& get_context() const noexcept;
 
 private:
 	VulkanContext                       m_Context;

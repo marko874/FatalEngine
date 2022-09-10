@@ -192,11 +192,5 @@ void begin_render_pass(uint32_t img_index, VulkanContext const& ctx, VkCommandBu
 
 	vkCmdBeginRenderPass(cb, &info, VK_SUBPASS_CONTENTS_INLINE);
 }
-
-void end_render_pass(VkCommandBuffer const& cb)
-{
-	vkCmdEndRenderPass(cb);
-}
-
 } // namespace RenderPass
 } // namespace Swapchain

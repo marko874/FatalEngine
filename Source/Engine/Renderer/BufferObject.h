@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Core/Asserts.h>
 #include <Core/Logger.h>
 #include <vulkan/vulkan.h>
 
@@ -16,7 +17,7 @@ class BufferObject
 public:
 	BufferObject() = default;
 
-	BufferObject(VkDevice const& device, VkPhysicalDevice const& physical, uint32_t buffer_size)
+	BufferObject(VkDevice const& device, VkPhysicalDevice const& physical, uint64_t buffer_size)
 		: m_BufferSize(buffer_size)
 	{
 		VkBufferUsageFlags flags = 0;
@@ -55,6 +56,8 @@ public:
 
 		Assert::fatal_vk_assert(vkAllocateMemory(device, &alloc_info, nullptr, &m_Memory));
 		vkBindBufferMemory(device, m_Buffer, m_Memory, 0);
+
+		Logger::log<Logger::Level::Info>("BufferObject ctor call.");
 	}
 
 	void map_memory(VkDevice const& device, T* data)
@@ -102,5 +105,11 @@ private:
 	VkMemoryRequirements m_Requirements;
 
 	uint32_t m_MemoryIndex;
-	uint32_t m_BufferSize;
+	uint64_t m_BufferSize;
 };
+
+template<typename T, BufferType B>
+inline void init_buffer(VkDevice const& device, VkPhysicalDevice const& physical, uint64_t buffer_size)
+{
+	return BufferObject<T, B>(device, physical, buffer_size);
+}
