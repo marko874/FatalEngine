@@ -5,6 +5,7 @@
 
 #include <Core/Asserts.h>
 #include <FatalPCH.h>
+#include <Renderer/BufferObject.h>
 #include <optional>
 #include <utility>
 
@@ -100,6 +101,8 @@ public:
 
 	VulkanContext const& get_context() const noexcept;
 
+	~Renderer();
+
 private:
 	VulkanContext                       m_Context;
 	std::pair<VkSemaphore, VkSemaphore> m_Semaphores;
@@ -109,8 +112,14 @@ private:
 	std::unique_ptr<CommandPool>   m_CommandPool;
 	std::unique_ptr<CommandBuffer> m_CommandBuffer;
 
-	VkShaderModule        m_VertexShader;
-	VkShaderModule        m_FragmentShader;
+	VkShaderModule m_VertexShader;
+	VkShaderModule m_FragmentShader;
+
+	VkDescriptorPool      m_DescriptorPool;
 	VkDescriptorSetLayout m_DescriptorLayout;
-	PipelineBuilder       m_PipelineBuilder;
+	VkDescriptorSet       m_DescriptorSet;
+
+	BufferObject<float, BufferType::Uniform>* m_UniformBuffer;
+
+	PipelineBuilder m_PipelineBuilder;
 };

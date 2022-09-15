@@ -57,6 +57,14 @@ void Renderer::initialize(std::string_view app_name, void* state, uint32_t width
 
 	m_PipelineBuilder.build(device.m_Device, m_Context.m_VulkanSwapchain.m_RenderPass);
 
+	m_DescriptorPool = Descriptor::create_descriptor_pool(device.m_Device);
+
+	m_UniformBuffer = new BufferObject<float, BufferType::Uniform>(device.m_Device, device.m_PhysicalDevice, sizeof(float));
+
+	float dummy[3] = { 0.0f, 0.0f, 1.0f };
+	m_UniformBuffer->map_memory(device.m_Device, dummy);
+
+	m_DescriptorSet = Descriptor::create_desriptor_set(device.m_Device, m_DescriptorPool, m_DescriptorLayout, m_UniformBuffer->get_buffer(), sizeof(float));
 	Logger::log<Logger::Level::Info>("Renderer initialized successfully.");
 }
 
@@ -64,6 +72,7 @@ VulkanContext const& Renderer::get_context() const noexcept
 {
 	return m_Context;
 }
+
 #pragma warning(disable : 4100)
 void Renderer::render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBuffer const& ebo, uint64_t indices)
 {
@@ -80,6 +89,8 @@ void Renderer::render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBu
 	VkDeviceSize offset = 0;
 	vkCmdBindVertexBuffers(cb, 0, 1, &vbo, &offset);
 	vkCmdBindIndexBuffer(cb, ebo, 0, VK_INDEX_TYPE_UINT16);
+
+	vkCmdBindDescriptorSets(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineBuilder.get_layout(), 0, 1, &m_DescriptorSet, 0, nullptr);
 	vkCmdDrawIndexed(cb, static_cast<uint32_t>(indices), 1, 0, 0, 0);
 
 	vkCmdEndRenderPass(cb);
@@ -87,4 +98,9 @@ void Renderer::render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBu
 
 	Device::submit_queue(m_Context.m_VulkanDevice.m_Queue, cb, m_Fence, m_Semaphores.first, m_Semaphores.second);
 	Device::queue_present(m_Context, m_Semaphores.second, img_index);
+}
+
+Renderer::~Renderer()
+{
+	delete m_UniformBuffer;
 }

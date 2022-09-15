@@ -10,19 +10,18 @@
 #include <Renderer/Pipeline.h>
 #include <Renderer/Renderer.h>
 
-#pragma warning(disable : 26495)
 struct ApplicationState
 {
-	bool    m_IsRunning;
-	bool    m_IsSuspended;
-	int16_t m_Width;
-	int16_t m_Height;
+	bool    m_IsRunning   = false;
+	bool    m_IsSuspended = false;
+	int16_t m_Width       = 1280;
+	int16_t m_Height      = 720;
 
-	Fatal::Clock m_Clock;
-	double       m_LastTime;
+	Fatal::Clock m_Clock    = {};
+	double       m_LastTime = 0.0;
 
-	Platform::PlatformState m_PlatformState;
-	Application::Game       m_Game;
+	Platform::PlatformState m_PlatformState = {};
+	Application::Game       m_Game          = {};
 };
 
 static ApplicationState app_state;
@@ -87,6 +86,9 @@ bool run_application()
 	Model m;
 	m.create_model("../Assets/Monkey.glb", device, physical);
 
+	auto const& vbo = m.get_vertex_buffer_object().get_buffer();
+	auto const& ebo = m.get_index_buffer_object().get_buffer();
+
 	while(app_state.m_IsRunning)
 	{
 		if(!app_state.m_PlatformState.pump_messages())
@@ -108,7 +110,7 @@ bool run_application()
 				break;
 			}
 
-			renderer.render(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight, m.get_vertex_buffer_object().get_buffer(), m.get_index_buffer_object().get_buffer(), m.get_num_indices());
+			renderer.render(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight, vbo, ebo, m.get_num_indices());
 
 			if(!app_state.m_Game.render(dt))
 			{

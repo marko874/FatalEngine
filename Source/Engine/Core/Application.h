@@ -48,20 +48,17 @@ public:
 		return true;
 	}
 
-#pragma warning(disable : 4100)
-	inline bool update(double dt)
+	inline bool update([[maybe_unused]] double dt)
 	{
 		return true;
 	}
 
-#pragma warning(disable : 4100)
-	inline bool render(double dt)
+	inline bool render([[maybe_unused]] double dt)
 	{
 		return true;
 	}
 
-#pragma warning(disable : 4100)
-	inline void on_resize(uint32_t width, uint32_t height)
+	inline void on_resize([[maybe_unused]] uint32_t width, [[maybe_unused]] uint32_t height)
 	{
 		Logger::log<Logger::Level::Info>("Game window resized.");
 	}

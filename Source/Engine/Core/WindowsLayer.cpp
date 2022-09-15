@@ -148,13 +148,12 @@ void sleep(unsigned long miliseconds)
 	Sleep(miliseconds);
 }
 
-#pragma warning(disable : 4100)
-void* platform_allocate(uint64_t size, bool aligned)
+void* platform_allocate(uint64_t size, [[maybe_unused]] bool aligned)
 {
 	return malloc(size);
 }
 
-void platform_free(void* block, bool aligned)
+void platform_free(void* block, [[maybe_unused]] bool aligned)
 {
 	free(block);
 }
