@@ -1,24 +1,26 @@
 #include "Clock.h"
 
-#include "PlatformLayer.h"
+#include <chrono>
 
 namespace Fatal
 {
-void Clock::start()
+using namespace std::chrono;
+
+void Clock::start() noexcept
 {
-	m_StartTime   = Platform::get_time();
+	m_StartTime   = now();
 	m_ElapsedTime = 0.0;
 }
 
-void Clock::update()
+void Clock::update() noexcept
 {
 	if(m_StartTime != 0)
 	{
-		m_ElapsedTime = Platform::get_time() - m_StartTime;
+		m_ElapsedTime = now() - m_StartTime;
 	}
 }
 
-void Clock::stop()
+void Clock::stop() noexcept
 {
 	m_StartTime = 0.0;
 }
@@ -26,5 +28,10 @@ void Clock::stop()
 double Clock::get_elapsed_time() const noexcept
 {
 	return m_ElapsedTime;
+}
+
+auto Clock::now() const noexcept
+{
+	return duration_cast<milliseconds>(time_point_cast<milliseconds>(high_resolution_clock::now()).time_since_epoch()).count();
 }
 } // namespace Fatal

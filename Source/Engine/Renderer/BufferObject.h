@@ -107,9 +107,3 @@ private:
 	uint32_t m_MemoryIndex;
 	uint64_t m_BufferSize;
 };
-
-template<typename T, BufferType B>
-inline void init_buffer(VkDevice const& device, VkPhysicalDevice const& physical, uint64_t buffer_size)
-{
-	return BufferObject<T, B>(device, physical, buffer_size);
-}

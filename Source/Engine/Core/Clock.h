@@ -7,16 +7,18 @@ class Clock
 public:
 	Clock() = default;
 
-	void start();
+	void start() noexcept;
 
-	void update();
+	void update() noexcept;
 
-	void stop();
+	void stop() noexcept;
 
 	[[nodiscard]] double get_elapsed_time() const noexcept;
 
+	[[nodiscard]] auto now() const noexcept;
+
 private:
-	double m_StartTime;
-	double m_ElapsedTime;
+	long long m_StartTime;
+	long long m_ElapsedTime;
 };
 } // namespace Fatal

@@ -9,12 +9,6 @@
 #include <vulkan/vulkan_win32.h>
 #include <windowsx.h>
 
-struct InternalState
-{
-	HINSTANCE m_Instance;
-	HWND      m_HWND;
-};
-
 static float         clock_frequency;
 static LARGE_INTEGER start_time;
 
@@ -133,14 +127,6 @@ PlatformState::~PlatformState()
 
 	delete m_InternalState;
 	m_InternalState = nullptr;
-}
-
-float get_time()
-{
-	LARGE_INTEGER current_time;
-	QueryPerformanceCounter(&current_time);
-
-	return static_cast<float>(current_time.QuadPart * clock_frequency);
 }
 
 void sleep(unsigned long miliseconds)

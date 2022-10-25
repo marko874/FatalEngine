@@ -9,6 +9,12 @@
 
 namespace Platform
 {
+struct InternalState
+{
+	HINSTANCE m_Instance;
+	HWND      m_HWND;
+};
+
 template<uint8_t Color, typename... T>
 inline void write_to_console(DWORD handle, T&&... args)
 {

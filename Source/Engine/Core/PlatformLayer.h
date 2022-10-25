@@ -56,13 +56,6 @@ private:
 };
 
 /**
- * Get the absolute time.
- *
- * @return float Time.
- */
-float get_time();
-
-/**
  * Sleep for N miliseconds.
  *
  * @param miliseconds Time in miliseconds to sleep.
