@@ -14,27 +14,27 @@ struct ApplicationConfig
 	/**
 	 * Start position on the X axis.
 	 */
-	int16_t m_StartPosX;
+	int16_t m_StartPosX = 200;
 
 	/**
 	 * Start position on the Yaxis.
 	 */
-	int16_t m_StartPosY;
+	int16_t m_StartPosY = 200;
 
 	/**
 	 * Window width.
 	 */
-	int16_t m_StartWidth;
+	int16_t m_StartWidth = 800;
 
 	/**
 	 * Window height.
 	 */
-	int16_t m_StartHeight;
+	int16_t m_StartHeight = 600;
 
 	/**
 	 * Title bar of the application.
 	 */
-	std::string_view m_AppName;
+	std::string_view m_AppName = "FatalEngine";
 };
 
 class Game
@@ -53,8 +53,8 @@ public:
 		Logger::log<Logger::Level::Info>("Game window resized.");
 	}
 
-	Application::ApplicationConfig m_Config;
-	void*                          m_State;
+	Application::ApplicationConfig m_Config = {};
+	void*                          m_State  = nullptr;
 };
 
 /**
