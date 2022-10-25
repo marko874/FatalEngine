@@ -18,7 +18,7 @@ struct ApplicationState
 	int16_t m_Height      = 720;
 
 	Fatal::Clock m_Clock    = {};
-	double       m_LastTime = 0.0;
+	long long    m_LastTime = 0;
 
 	Platform::PlatformState m_PlatformState = {};
 	Application::Game       m_Game          = {};
@@ -99,28 +99,13 @@ bool run_application()
 		if(!app_state.m_IsSuspended)
 		{
 			app_state.m_Clock.update();
-			double current_time     = app_state.m_Clock.get_elapsed_time();
-			double dt               = current_time - app_state.m_LastTime;
-			double frame_start_time = Platform::get_time();
-
-			if(!app_state.m_Game.update(dt))
-			{
-				Logger::log<Fatal>("Game update failed.");
-				app_state.m_IsRunning = false;
-				break;
-			}
+			long long current_time     = app_state.m_Clock.get_elapsed_time();
+			long long frame_start_time = app_state.m_Clock.now();
 
 			renderer.render(app_state.m_Game.m_Config.m_StartWidth, app_state.m_Game.m_Config.m_StartHeight, vbo, ebo, m.get_num_indices());
 
-			if(!app_state.m_Game.render(dt))
-			{
-				Logger::log<Fatal>("Game render failed.");
-				app_state.m_IsRunning = false;
-				break;
-			}
-
-			double frame_end_time     = Platform::get_time();
-			double frame_elapsed_time = frame_end_time - frame_start_time;
+			long long frame_end_time     = app_state.m_Clock.now();
+			long long frame_elapsed_time = frame_end_time - frame_start_time;
 			running_time += frame_elapsed_time;
 
 			double remaining_seconds = target_frame_seconds - frame_elapsed_time;

@@ -48,16 +48,6 @@ public:
 		return true;
 	}
 
-	inline bool update([[maybe_unused]] double dt)
-	{
-		return true;
-	}
-
-	inline bool render([[maybe_unused]] double dt)
-	{
-		return true;
-	}
-
 	inline void on_resize([[maybe_unused]] uint32_t width, [[maybe_unused]] uint32_t height)
 	{
 		Logger::log<Logger::Level::Info>("Game window resized.");

@@ -13,9 +13,9 @@ public:
 
 	void stop() noexcept;
 
-	[[nodiscard]] double get_elapsed_time() const noexcept;
+	[[nodiscard]] long long get_elapsed_time() const noexcept;
 
-	[[nodiscard]] auto now() const noexcept;
+	[[nodiscard]] long long now() const noexcept;
 
 private:
 	long long m_StartTime;
