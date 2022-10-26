@@ -10,6 +10,7 @@
 #include <Renderer/Pipeline.h>
 #include <Renderer/Renderer.h>
 #include <Scripting/ScriptingSystem.h>
+#include <filesystem>
 
 struct ApplicationState
 {
@@ -68,7 +69,7 @@ bool create_application(Game const& game)
 		return false;
 	}
 
-	script_state.process_file("C:/Dev/cpp/FatalEngineRemoteDev/Scripts/FileReading.lua");
+	script_state.check_expression(script_state.process_file("../Scripts/Basic.lua"));
 
 	is_initialized = true;
 	return true;

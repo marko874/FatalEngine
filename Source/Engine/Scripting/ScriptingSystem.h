@@ -20,7 +20,8 @@ public:
 	State();
 	virtual ~State();
 
-	void process_file(std::string_view file) const noexcept;
+	int32_t process_file(std::string_view file) const noexcept;
+	bool    check_expression(int32_t exp) const noexcept;
 
 	State(State&&)                 = delete;
 	State(State const&)            = delete;
