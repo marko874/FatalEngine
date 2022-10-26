@@ -9,6 +9,7 @@
 #include <Renderer/BufferObject.h>
 #include <Renderer/Pipeline.h>
 #include <Renderer/Renderer.h>
+#include <Scripting/ScriptingSystem.h>
 
 struct ApplicationState
 {
@@ -25,6 +26,7 @@ struct ApplicationState
 };
 
 static ApplicationState app_state;
+static Scripting::State script_state;
 static bool             is_initialized = false;
 
 // TODO: Make it fully singleton.
@@ -65,6 +67,8 @@ bool create_application(Game const& game)
 		Logger::log<Fatal>("Game initialization failed.");
 		return false;
 	}
+
+	script_state.process_file("C:/Dev/cpp/FatalEngineRemoteDev/Scripts/FileReading.lua");
 
 	is_initialized = true;
 	return true;

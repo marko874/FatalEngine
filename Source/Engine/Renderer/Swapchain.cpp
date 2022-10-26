@@ -176,15 +176,15 @@ namespace RenderPass
 void begin_render_pass(uint32_t img_index, VulkanContext const& ctx, VkCommandBuffer const& cb, uint32_t width,
 	uint32_t height)
 {
-	VkClearValue          clear_val = { 1.0f, 0.0f, 0.0f, 1.0f };
+	VkClearValue          clear_val = { 0.13f, 0.13f, 0.13f, 1.0f };
 	VkRenderPassBeginInfo info      = {
 			 .sType           = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
 			 .renderPass      = ctx.m_VulkanSwapchain.m_RenderPass,
 			 .framebuffer     = ctx.m_VulkanSwapchain.m_Framebuffers[img_index],
 			 .renderArea      = { { 0, 0 },
 					  {
-						  width,
-						  height,
+                width,
+                height,
             } },
 			 .clearValueCount = 1,
 			 .pClearValues    = &clear_val,
