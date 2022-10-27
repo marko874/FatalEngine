@@ -4,6 +4,7 @@
 #include "Logger.h"
 #include "PlatformLayer.h"
 
+#include <Editor/Editor.h>
 #include <FatalPCH.h>
 #include <Model.h>
 #include <Renderer/BufferObject.h>
@@ -85,8 +86,11 @@ bool run_application()
 	uint8_t frame_count          = 0;
 	double  target_frame_seconds = 1.0 / 60.0;
 
-	auto const& device   = renderer.get_context().m_VulkanDevice.m_Device;
-	auto const& physical = renderer.get_context().m_VulkanDevice.m_PhysicalDevice;
+	auto const& ctx      = renderer.get_context();
+	auto const& device   = ctx.m_VulkanDevice.m_Device;
+	auto const& physical = ctx.m_VulkanDevice.m_PhysicalDevice;
+
+	Editor::init_ui(device, physical, static_cast<Platform::InternalState*>(app_state.m_PlatformState.get_state())->m_HWND, ctx.m_VulkanDevice.m_Queue, ctx.m_VulkanSwapchain.m_RenderPass, ctx.m_Instance);
 
 	Model m;
 	m.create_model("../Assets/Monkey.glb", device, physical);

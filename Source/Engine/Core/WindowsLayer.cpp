@@ -1,6 +1,7 @@
 #include "Asserts.h"
 #include "PlatformLayer.h"
 
+#include <imgui.h>
 #if FATAL_PLATFORM_WINDOWS
 #include "WindowsLayer.h"
 
@@ -12,7 +13,8 @@
 static float         clock_frequency;
 static LARGE_INTEGER start_time;
 
-LRESULT CALLBACK win32_process_message(HWND hwnd, uint32_t msg, WPARAM w_param, LPARAM l_param);
+LRESULT CALLBACK       win32_process_message(HWND hwnd, uint32_t msg, WPARAM w_param, LPARAM l_param);
+IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace Platform
 {
@@ -238,12 +240,11 @@ LRESULT CALLBACK win32_process_message(HWND hwnd, uint32_t msg, WPARAM w_param, 
 		case WM_MBUTTONUP:
 		case WM_RBUTTONUP:
 		{
-			// bool pressed = msg == WM_LBUTTONDOWN || msg == WM_RBUTTONDOWN || msg ==
-			// WM_MBUTTONDOWN;
+			bool pressed = msg == WM_LBUTTONDOWN || msg == WM_RBUTTONDOWN || msg == WM_MBUTTONDOWN;
 		}
 		break;
 	}
-
+	ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param);
 	return DefWindowProcA(hwnd, msg, w_param, l_param);
 }
 #endif

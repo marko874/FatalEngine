@@ -6,6 +6,8 @@
 #include <Core/WindowsLayer.h>
 #include <FatalPCH.h>
 #include <Renderer/BufferObject.h>
+#include <imgui_impl_vulkan.h>
+#include <imgui_impl_win32.h>
 #include <vulkan/vulkan.h>
 
 using enum Logger::Level;
@@ -73,7 +75,6 @@ VulkanContext const& Renderer::get_context() const noexcept
 	return m_Context;
 }
 
-#pragma warning(disable : 4100)
 void Renderer::render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBuffer const& ebo, uint64_t indices)
 {
 	uint32_t img_index = 0;
@@ -92,6 +93,16 @@ void Renderer::render(uint32_t width, uint32_t height, VkBuffer const& vbo, VkBu
 
 	vkCmdBindDescriptorSets(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, m_PipelineBuilder.get_layout(), 0, 1, &m_DescriptorSet, 0, nullptr);
 	vkCmdDrawIndexed(cb, static_cast<uint32_t>(indices), 1, 0, 0, 0);
+
+	ImGui_ImplVulkan_CreateFontsTexture(cb);
+	ImGui_ImplVulkan_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+
+	ImGui::NewFrame();
+	ImGui::ShowDemoWindow();
+	ImGui::Render();
+
+	ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), cb);
 
 	vkCmdEndRenderPass(cb);
 	m_CommandBuffer->end();

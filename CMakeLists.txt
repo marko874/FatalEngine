@@ -18,11 +18,26 @@ add_library(FatalEngineDL SHARED ${engine_src})
 target_compile_definitions(FatalEngineDL PRIVATE FATAL_EXPORT=1)
 
 find_package(Vulkan REQUIRED)
+
 target_include_directories(FatalEngineDL PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/Source/Engine/
     ${CMAKE_CURRENT_SOURCE_DIR}/Source
     ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/cgltf/
     ${Vulkan_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/
+    ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends
+)
+
+target_sources(FatalEngineDL PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_vulkan.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_vulkan.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_win32.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/backends/imgui_impl_win32.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/imgui.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/imgui_demo.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/imgui_draw.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/imgui_tables.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/imgui/imgui_widgets.cpp
 )
 
 add_subdirectory(ThirdParty/lua)
